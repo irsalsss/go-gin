@@ -1,7 +1,5 @@
 package config
 
-import (
-	"gopkg.in/danilopolani/gocialite.v1"
-)
+import "github.com/danilopolani/gocialite"
 
 var Gocial = gocialite.NewDispatcher()

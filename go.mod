@@ -6,7 +6,6 @@ require (
 	github.com/gin-gonic/gin v1.10.0
 	github.com/gosimple/slug v1.14.0
 	github.com/jinzhu/gorm v1.9.16
-	gopkg.in/danilopolani/gocialite.v1 v1.0.2
 )
 
 require (
@@ -15,7 +14,7 @@ require (
 	github.com/bytedance/sonic/loader v0.1.1 // indirect
 	github.com/cloudwego/base64x v0.1.4 // indirect
 	github.com/cloudwego/iasm v0.2.0 // indirect
-	github.com/danilopolani/gocialite v1.0.2 // indirect
+	github.com/danilopolani/gocialite v1.0.2
 	github.com/gabriel-vasile/mimetype v1.4.3 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
