@@ -12,9 +12,9 @@ var DB *gorm.DB
 func InitDB() {
 	var err error
 
-	DB, err = gorm.Open("mysql", "root:root@learning-go?charset=utf8mb4&parseTime=True&loc=Local")
+	DB, err = gorm.Open("mysql", "root:Password01!@/learning-go?charset=utf8mb4&parseTime=True&loc=Local")
 	if err != nil {
-		panic("failed to connect database")
+		panic(err)
 	}
 
 	// Migrate the schema
