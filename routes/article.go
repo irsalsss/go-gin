@@ -30,10 +30,25 @@ func GetArticle(c *gin.Context) {
 	}
 }
 
+func GetArticleByTag(c *gin.Context) {
+	tag := c.Param("tag")
+
+	items := []models.Article{}
+
+	if config.DB.Where("tag LIKE ?", "%"+tag+"%").Find(&items).RecordNotFound() {
+		c.JSON(404, gin.H{"status": "error", "message": "record not found"})
+		c.Abort()
+		return
+	}
+
+	c.JSON(200, gin.H{"data": items})
+}
+
 func PostArticle(c *gin.Context) {
 	item := models.Article{
 		Title:  c.PostForm("title"),
 		Desc:   c.PostForm("desc"),
+		Tag:    c.PostForm("tag"),
 		Slug:   slug.Make(c.PostForm("title")),
 		UserID: uint(c.MustGet("jwt_user_id").(float64)),
 	}
