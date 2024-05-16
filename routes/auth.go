@@ -1,15 +1,24 @@
 package routes
 
 import (
+	"fmt"
 	"net/http"
 	"os"
+	"time"
 
 	"go-gin-rest/config"
 	"go-gin-rest/models"
 
 	"github.com/danilopolani/gocialite/structs"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )
+
+var JWT_SECRET = os.Getenv("JWT_SECRET")
+
+func CheckToken(c *gin.Context) {
+	c.JSON(200, gin.H{"msg": "success login"})
+}
 
 // Redirect to correct oAuth URL
 func RedirectHandler(c *gin.Context) {
@@ -63,19 +72,38 @@ func CallbackHandler(c *gin.Context) {
 	provider := c.Param("provider")
 
 	// Handle callback and check for errors
-	user, token, err := config.Gocial.Handle(state, code)
+	user, _, err := config.Gocial.Handle(state, code)
 	if err != nil {
 		c.Writer.Write([]byte("Error: " + err.Error()))
 		return
 	}
 
 	var newUser = getOrRegisterUser(provider, user)
+	var jwtToken = createToken(&newUser)
 
 	c.JSON(200, gin.H{
 		"data":    newUser,
-		"token":   token,
+		"token":   jwtToken,
 		"message": "berhasil log in",
 	})
+}
+
+func createToken(user *models.User) string {
+	jwtToken := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"user_id":   user.ID,
+		"user_role": user.Role,
+		"exp":       time.Now().AddDate(0, 0, 7).Unix(),
+		// iat = issued at (kapan tokennya dikeluarkan)
+		"iat": time.Now().Unix(),
+	})
+
+	tokenString, err := jwtToken.SignedString([]byte(JWT_SECRET))
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	return tokenString
 }
 
 func getOrRegisterUser(provider string, user *structs.User) models.User {

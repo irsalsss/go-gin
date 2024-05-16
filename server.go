@@ -2,6 +2,7 @@ package main
 
 import (
 	"go-gin-rest/config"
+	"go-gin-rest/middleware"
 	"go-gin-rest/routes"
 
 	"github.com/gin-gonic/gin"
@@ -19,6 +20,9 @@ func main() {
 	{
 		v1.GET("/auth/:provider", routes.RedirectHandler)
 		v1.GET("/auth/:provider/callback", routes.CallbackHandler)
+
+		// testing token
+		v1.GET("/check", middleware.IsAuth(), routes.CheckToken)
 
 		articles := v1.Group("/article")
 		{
