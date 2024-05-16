@@ -24,7 +24,8 @@ func main() {
 		// testing token
 		v1.GET("/check", middleware.IsAuth(), routes.CheckToken)
 
-		v1.GET("/article:slug", routes.GetArticle)
+		v1.GET("/article/:slug", routes.GetArticle)
+		v1.PUT("/article/update/:id", middleware.IsAuth(), routes.UpdateArticle)
 
 		articles := v1.Group("/articles")
 		{
