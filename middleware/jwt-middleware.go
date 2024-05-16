@@ -20,6 +20,12 @@ func checkJWT() gin.HandlerFunc {
 		authHeader := c.Request.Header.Get("Authorization")
 		bearerToken := strings.Split(authHeader, " ")
 
+		if len(bearerToken) != 2 {
+			c.JSON(422, gin.H{"msg": "Authorizatio is not provided"})
+			c.Abort()
+			return
+		}
+
 		token, err := jwt.Parse(bearerToken[1], func(token *jwt.Token) (interface{}, error) {
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 				return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
@@ -31,7 +37,9 @@ func checkJWT() gin.HandlerFunc {
 		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 			fmt.Println(claims["user_id"], claims["user_role"])
 		} else {
-			fmt.Println(err)
+			c.JSON(422, gin.H{"msg": "Invalid token", "err": err})
+			c.Abort()
+			return
 		}
 	}
 }
