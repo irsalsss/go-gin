@@ -3,6 +3,8 @@ package routes
 import (
 	"go-gin-rest/config"
 	"go-gin-rest/models"
+	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gosimple/slug"
@@ -45,11 +47,18 @@ func GetArticleByTag(c *gin.Context) {
 }
 
 func PostArticle(c *gin.Context) {
+	var oldItem models.Article
+	slug := slug.Make(c.PostForm("title"))
+
+	if !config.DB.First(&oldItem, "slug = ?", slug).RecordNotFound() {
+		slug = slug + "-" + strconv.FormatInt(time.Now().Unix(), 10)
+	}
+
 	item := models.Article{
 		Title:  c.PostForm("title"),
 		Desc:   c.PostForm("desc"),
 		Tag:    c.PostForm("tag"),
-		Slug:   slug.Make(c.PostForm("title")),
+		Slug:   slug,
 		UserID: uint(c.MustGet("jwt_user_id").(float64)),
 	}
 
