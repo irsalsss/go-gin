@@ -32,15 +32,16 @@ func GetArticle(c *gin.Context) {
 
 func PostArticle(c *gin.Context) {
 	item := models.Article{
-		Title: c.PostForm("title"),
-		Desc:  c.PostForm("desc"),
-		Slug:  slug.Make(c.PostForm("title")),
+		Title:  c.PostForm("title"),
+		Desc:   c.PostForm("desc"),
+		Slug:   slug.Make(c.PostForm("title")),
+		UserID: uint(c.MustGet("jwt_user_id").(float64)),
 	}
 
 	config.DB.Create(&item)
 
 	c.JSON(200, gin.H{
 		"status": "berhasil ngepost",
-		"data":   "item",
+		"data":   item,
 	})
 }
