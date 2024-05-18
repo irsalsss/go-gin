@@ -110,3 +110,15 @@ func UpdateArticle(c *gin.Context) {
 		"data":   item,
 	})
 }
+
+func DeleteArticle(c *gin.Context) {
+	id := c.Param("id")
+	var article models.Article
+
+	config.DB.Where("id = ?", id).Delete(&article)
+
+	c.JSON(200, gin.H{
+		"status": "berhasil delete",
+		"data":   article,
+	})
+}

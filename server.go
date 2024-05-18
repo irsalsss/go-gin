@@ -24,7 +24,6 @@ func main() {
 		v1.GET("/profile", middleware.IsAuth(), routes.GetProfile)
 
 		v1.GET("/article/:slug", routes.GetArticle)
-		v1.PUT("/article/update/:id", middleware.IsAuth(), routes.UpdateArticle)
 
 		articles := v1.Group("/articles")
 		{
@@ -32,6 +31,8 @@ func main() {
 
 			articles.GET("/tag/:tag", routes.GetArticleByTag)
 			articles.POST("/", middleware.IsAuth(), routes.PostArticle)
+			articles.PUT("/update/:id", middleware.IsAuth(), routes.UpdateArticle)
+			articles.DELETE("/delete/:id", middleware.IsAdmin(), routes.DeleteArticle)
 		}
 	}
 
