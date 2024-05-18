@@ -20,6 +20,18 @@ func GetHome(c *gin.Context) {
 	})
 }
 
+func GetProfile(c *gin.Context) {
+	user_id := int(c.MustGet("jwt_user_id").(float64))
+	var user models.User
+
+	item := config.DB.Where("id = ?", user_id).Preload("Articles", "user_id = ?", user_id).Find(&user)
+
+	c.JSON(200, gin.H{
+		"status": "berhasil ke halaman profile",
+		"data":   item,
+	})
+}
+
 func GetArticle(c *gin.Context) {
 	slug := c.Param("slug")
 

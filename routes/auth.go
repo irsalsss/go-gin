@@ -16,10 +16,6 @@ import (
 
 var JWT_SECRET = os.Getenv("JWT_SECRET")
 
-func CheckToken(c *gin.Context) {
-	c.JSON(200, gin.H{"msg": "success login"})
-}
-
 // Redirect to correct oAuth URL
 func RedirectHandler(c *gin.Context) {
 	// Retrieve provider from route
