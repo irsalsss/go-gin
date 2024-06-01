@@ -1,4 +1,4 @@
-FROM golang:1.22.3-alpine
+FROM golang:1.22.3 AS builder
 
 WORKDIR /app
 
@@ -8,4 +8,6 @@ RUN go mod download
 
 COPY *.go ./
 
-CMD ["go", "run", "/app/server.go"]
+RUN CGO_ENABLED=0 go build -o /bin
+
+CMD [ "/bin" ]
