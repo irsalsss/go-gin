@@ -1,9 +1,9 @@
 package main
 
 import (
-	"go-gin-rest/config"
-	"go-gin-rest/middleware"
-	"go-gin-rest/routes"
+	"github.com/irsalsss/go-gin/config"
+	"github.com/irsalsss/go-gin/middleware"
+	"github.com/irsalsss/go-gin/routes"
 
 	"github.com/gin-gonic/gin"
 	"github.com/subosito/gotenv"

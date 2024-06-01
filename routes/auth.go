@@ -6,8 +6,8 @@ import (
 	"os"
 	"time"
 
-	"go-gin-rest/config"
-	"go-gin-rest/models"
+	"github.com/irsalsss/go-gin/config"
+	"github.com/irsalsss/go-gin/models"
 
 	"github.com/danilopolani/gocialite/structs"
 	"github.com/dgrijalva/jwt-go"

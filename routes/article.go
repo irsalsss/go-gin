@@ -1,10 +1,11 @@
 package routes
 
 import (
-	"go-gin-rest/config"
-	"go-gin-rest/models"
 	"strconv"
 	"time"
+
+	"github.com/irsalsss/go-gin/config"
+	"github.com/irsalsss/go-gin/models"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gosimple/slug"

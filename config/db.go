@@ -1,7 +1,7 @@
 package config
 
 import (
-	"go-gin-rest/models"
+	"github.com/irsalsss/go-gin/models"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
