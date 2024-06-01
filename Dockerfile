@@ -1,13 +1,32 @@
-FROM golang:1.22.3 AS builder
+# Stage 1: Build the Go application
+FROM golang:1.22.3 as builder
 
+# Set the working directory inside the container
 WORKDIR /app
 
-# Download Go modules
+# Copy the Go modules manifests
 COPY go.mod go.sum ./
+
+# Download the Go modules
 RUN go mod download
 
-COPY *.go ./
+# Copy the source code
+COPY . .
 
-RUN CGO_ENABLED=0 go build -o /bin
+# Build the Go application
+RUN CGO_ENABLED=0 GOOS=linux go build -o /goapp
 
-CMD [ "/bin" ]
+# Stage 2: Create a small image with the compiled Go binary
+FROM alpine:latest
+
+# Install necessary CA certificates for HTTPS connections
+RUN apk add --no-cache ca-certificates
+
+# Copy the binary from the builder stage
+COPY --from=builder /goapp /goapp
+
+# Expose the port on which the app will run
+EXPOSE 8080
+
+# Command to run the application
+CMD ["/goapp"]
