@@ -14,7 +14,7 @@ RUN go mod download
 COPY . .
 
 # Build the Go application
-RUN CGO_ENABLED=0 GOOS=linux go build -o /goapp
+RUN CGO_ENABLED=0 GOOS=linux go build -o /build
 
 # Stage 2: Create a small image with the compiled Go binary
 FROM alpine:latest
@@ -23,10 +23,10 @@ FROM alpine:latest
 RUN apk add --no-cache ca-certificates
 
 # Copy the binary from the builder stage
-COPY --from=builder /goapp /goapp
+COPY --from=builder /build /build
 
 # Expose the port on which the app will run
 EXPOSE 8080
 
 # Command to run the application
-CMD ["/goapp"]
+CMD ["/build"]
